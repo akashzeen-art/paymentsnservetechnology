@@ -6,6 +6,7 @@ import CurrencyConverter from '../components/CurrencyConverter';
 import GlobalMap from '../components/GlobalMap';
 import ParallaxServices from '../components/ParallaxServices';
 import RolloutTimeline from '../components/RolloutTimeline';
+import VideoTestimonials from '../components/VideoTestimonials';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
 
@@ -21,6 +22,7 @@ export default function Home() {
         <GlobalMap />
         <ParallaxServices />
         <RolloutTimeline />
+        <VideoTestimonials />
         <FinalCTA />
       </main>
       <Footer />

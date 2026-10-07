@@ -6,11 +6,13 @@ import {
   useInView,
   AnimatePresence,
 } from 'framer-motion';
-import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const VIDEO_SRC =
-  'https://vz-7fee017a-811.b-cdn.net/9bd4283a-d69a-4d09-bf95-e7dc02e2541d/play_480p.mp4';
+const VIDEOS = [
+  'https://vz-7fee017a-811.b-cdn.net/9bd4283a-d69a-4d09-bf95-e7dc02e2541d/play_480p.mp4',
+  'https://vz-7fee017a-811.b-cdn.net/99a81c42-22ba-4c1c-a5c1-7a62c666943f/play_480p.mp4',
+];
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -25,6 +27,7 @@ export default function CrossBorderVideo() {
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const inView = useInView(frameRef, { amount: 0.4 });
 
@@ -113,6 +116,21 @@ export default function CrossBorderVideo() {
     setMuted((m) => !m);
   };
 
+  const goTo = (e, next) => {
+    e.stopPropagation();
+    setIndex((next + VIDEOS.length) % VIDEOS.length);
+    setReady(false);
+    setProgress(0);
+  };
+
+  useEffect(() => {
+    const coarse =
+      typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+    if (hovering || (coarse && inView)) playVideo();
+    else setPlaying(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index]);
+
   const togglePlayTap = () => {
     const coarse =
       typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
@@ -199,18 +217,56 @@ export default function CrossBorderVideo() {
                 style={{ y: scrollY, scale: scrollScale }}
               >
                 <video
+                  key={VIDEOS[index]}
                   ref={videoRef}
                   className="absolute inset-0 h-full w-full object-cover"
                   muted={muted}
                   loop
                   playsInline
+                  controlsList="nodownload"
+                  disablePictureInPicture
+                  onContextMenu={(e) => e.preventDefault()}
                   preload="auto"
                   onLoadedData={() => setReady(true)}
                   aria-label="Cross-border payments overview video"
                 >
-                  <source src={VIDEO_SRC} type="video/mp4" />
+                  <source src={VIDEOS[index]} type="video/mp4" />
                 </video>
               </motion.div>
+
+              {VIDEOS.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => goTo(e, index - 1)}
+                    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-colors"
+                    aria-label="Previous video"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => goTo(e, index + 1)}
+                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-colors"
+                    aria-label="Next video"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
+                  <div className="absolute top-4 inset-x-0 z-30 flex justify-center gap-2">
+                    {VIDEOS.map((src, i) => (
+                      <button
+                        key={src}
+                        type="button"
+                        onClick={(e) => goTo(e, i)}
+                        className={`h-2 rounded-full transition-all ${
+                          i === index ? 'w-6 bg-orange-500' : 'w-2 bg-white/50 hover:bg-white/80'
+                        }`}
+                        aria-label={`Show video ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
 
               <div
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/25"
