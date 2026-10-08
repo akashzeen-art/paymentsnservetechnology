@@ -33,9 +33,9 @@ function writeCache(rates) {
  * Always converts other currencies → USD.
  * Live mid-market rates from open.er-api.com (no API key), with local fallback.
  */
-export function useCurrencyConverter(initial = { amount: '10000', from: 'NGN' }) {
+export function useCurrencyConverter(initial = { amount: '10000', from: 'DZD' }) {
   const [amount, setAmount] = useState(initial.amount);
-  const [fromCurrency, setFromCurrency] = useState(initial.from === 'USD' ? 'NGN' : initial.from);
+  const [fromCurrency, setFromCurrency] = useState(initial.from === 'USD' ? 'DZD' : initial.from);
   const toCurrency = 'USD';
   const [rates, setRates] = useState(() => ({ ...fallbackRates, ...(readCache() || {}) }));
   const [ratesStatus, setRatesStatus] = useState(() => (readCache() ? 'live' : 'loading'));
