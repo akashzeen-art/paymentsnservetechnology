@@ -4,8 +4,6 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5map from '@amcharts/amcharts5/map';
 import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow';
 import { markets, paymentRoutes } from '../data/paymentRoutes';
-import BrandLogo from './BrandLogo';
-
 const MIN_MS = 4200;
 const SAFETY_MS = 9000;
 const ROUTE_MS = 480;
@@ -24,8 +22,15 @@ const HUBS = {
 };
 
 const MARKET_IDS = markets.map((m) => m.id);
-const CURRENCY = Object.fromEntries(markets.map((m) => [m.id, m.currency]));
-const NAME = Object.fromEntries(markets.map((m) => [m.id, m.name]));
+const MARKET = Object.fromEntries(markets.map((m) => [m.id, m]));
+
+const LEAD_CORRIDOR = { id: 'EG', pos: 'top', delay: 0.5 };
+const CORRIDORS = [
+  { id: 'MA', pos: 'tr', delay: 1 },
+  { id: 'PK', pos: 'tl', delay: 1.4 },
+  { id: 'ET', pos: 'bl', delay: 1.8 },
+  { id: 'CI', pos: 'br', delay: 2.2 },
+];
 
 const COLOR = {
   ocean: 0x0b1730,
@@ -204,6 +209,20 @@ function PaymentGlobe({ activeRoute, entered, onReady, reducedMotion }) {
   return <div ref={hostRef} className="preloader-globe-canvas" aria-hidden="true" />;
 }
 
+function CorridorChip({ id, pos, delay }) {
+  const { name, currency } = MARKET[id];
+  return (
+    <div className={`corridor-chip corridor-chip--${pos}`} style={{ animationDelay: `${delay}s` }}>
+      <span className="corridor-chip-code">{currency}</span>
+      <span className="corridor-chip-text">
+        {name}
+        <span className="corridor-chip-arrow">→</span>
+        USD
+      </span>
+    </div>
+  );
+}
+
 export default function Preloader() {
   const reducedMotion = useReducedMotion() ?? false;
   const [visible, setVisible] = useState(true);
@@ -250,8 +269,6 @@ export default function Preloader() {
     return () => window.clearTimeout(id);
   }, [minElapsed, globeReady]);
 
-  const route = paymentRoutes[routeIndex];
-
   return (
     <AnimatePresence
       onExitComplete={() => {
@@ -269,19 +286,7 @@ export default function Preloader() {
         >
           <div className="preloader-stars" aria-hidden="true" />
 
-          <motion.div
-            className="preloader-brand"
-            initial={{ opacity: 0, y: -14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6, ease }}
-          >
-            <BrandLogo size={30} />
-            <div>
-              <span className="preloader-wordmark">nSERVE</span>
-              <span className="preloader-tagline">Cross-Border Payments</span>
-            </div>
-          </motion.div>
+          <CorridorChip {...LEAD_CORRIDOR} />
 
           <motion.div
             className="preloader-globe"
@@ -300,40 +305,18 @@ export default function Preloader() {
             />
           </motion.div>
 
-          <div className="preloader-foot">
-            <div className="preloader-route">
-              <AnimatePresence mode="wait" initial={false}>
-                {done ? (
-                  <motion.p
-                    key="done"
-                    className="preloader-headline"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease }}
-                  >
-                    Across Borders.
-                  </motion.p>
-                ) : (
-                  <motion.div
-                    key={route.id}
-                    initial={{ opacity: 0, y: reducedMotion ? 0 : 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
-                    transition={{ duration: 0.22, ease }}
-                  >
-                    <p className="preloader-pair">
-                      {CURRENCY[route.from]}
-                      <span aria-hidden="true">→</span>
-                      {CURRENCY[route.to]}
-                    </p>
-                    <p className="preloader-corridor">
-                      {NAME[route.from]} → {NAME[route.to]}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+          <motion.div
+            className="preloader-corridors"
+            aria-hidden="true"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease }}
+          >
+            {CORRIDORS.map((corridor) => (
+              <CorridorChip key={corridor.id} {...corridor} />
+            ))}
+          </motion.div>
 
+          <div className="preloader-foot">
             <div className="preloader-meter">
               <span>Connecting markets</span>
               <span className="preloader-percent">{progress}%</span>
