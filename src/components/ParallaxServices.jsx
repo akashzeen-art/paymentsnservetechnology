@@ -41,21 +41,21 @@ const platforms = [
     solution:
       'Deep liquidity, broad currency coverage and a 24-48 hour operating model — purpose-built for restricted, exotic and high-friction corridors where conventional banking falls short.',
     stats: [
-      {
-        value: '50+',
-        label: 'Currencies',
-        desc: 'Major, exotic and illiquid markets managed seamlessly.',
-      },
-      {
+  {
+    value: '50+',
+    label: 'Currencies',
+    desc: 'Major, exotic and illiquid markets managed seamlessly.',
+  },
+  {
         value: '24–48 H',
-        label: 'Turnaround',
-        desc: 'Inward and outward cross-border payments executed fast.',
-      },
-      {
+    label: 'Turnaround',
+    desc: 'Inward and outward cross-border payments executed fast.',
+  },
+  {
         value: 'Worldwide',
-        label: 'Coverage',
-        desc: 'Deep liquidity across African markets and beyond.',
-      },
+    label: 'Coverage',
+    desc: 'Deep liquidity across African markets and beyond.',
+  },
     ],
     icon: ArrowLeftRight,
     accent: '#EA580C',
@@ -71,21 +71,21 @@ const platforms = [
     enablesLabel: 'What this enables',
     enables: [
       {
-        title: 'Secure by design',
-        desc: 'Sensitive documents, identities and transaction data protected at every handoff.',
-      },
-      {
-        title: 'Regulation-ready',
+    title: 'Secure by design',
+    desc: 'Sensitive documents, identities and transaction data protected at every handoff.',
+  },
+  {
+    title: 'Regulation-ready',
         desc: 'Built for cross-border compliance expectations across key markets.',
-      },
-      {
+  },
+  {
         title: 'Transparency',
         desc: 'Every approval, update and settlement event logged for review.',
-      },
-      {
-        title: 'Risk visibility',
-        desc: 'Clear exception handling so compliance teams stay informed without slowing the journey.',
-      },
+  },
+  {
+    title: 'Risk visibility',
+    desc: 'Clear exception handling so compliance teams stay informed without slowing the journey.',
+  },
     ],
     flowLabel: 'Compliance flow',
     flow: [
@@ -115,22 +115,22 @@ const platforms = [
     ],
     enablesLabel: 'Why teams choose nSERVE',
     enables: [
-      {
-        title: 'One connected process',
-        desc: 'Replace fragmented providers with a coordinated layer across countries and currencies.',
-      },
-      {
-        title: 'Built for complexity',
-        desc: 'Designed for repatriation, currency conversion and restricted corridors — not just easy markets.',
-      },
-      {
-        title: 'Speed with control',
-        desc: 'Target rapid execution without sacrificing compliance, documentation or auditability.',
-      },
-      {
-        title: 'Partner-ready',
-        desc: 'Structured for enterprises, institutions and operators that need dependable cross-border ops.',
-      },
+  {
+    title: 'One connected process',
+    desc: 'Replace fragmented providers with a coordinated layer across countries and currencies.',
+  },
+  {
+    title: 'Built for complexity',
+    desc: 'Designed for repatriation, currency conversion and restricted corridors — not just easy markets.',
+  },
+  {
+    title: 'Speed with control',
+    desc: 'Target rapid execution without sacrificing compliance, documentation or auditability.',
+  },
+  {
+    title: 'Partner-ready',
+    desc: 'Structured for enterprises, institutions and operators that need dependable cross-border ops.',
+  },
     ],
     icon: Route,
     accent: '#DC2626',
@@ -248,7 +248,7 @@ export default function ParallaxServices() {
                         : 'justify-center px-6 lg:px-12 py-7'
                     }`}
                   >
-                    <span
+            <span
                       className={`flex shrink-0 items-center justify-center rounded-full bg-white shadow-lg ${
                         isDense ? 'h-9 w-9 mb-2' : 'h-11 w-11 mb-3'
                       }`}
@@ -362,7 +362,7 @@ export default function ParallaxServices() {
                                 {stepIndex < platform.flow.length - 1 && (
                                   <span className="text-white/40 text-xs" aria-hidden="true">
                                     →
-                                  </span>
+            </span>
                                 )}
                               </div>
                             ))}
@@ -604,7 +604,7 @@ export default function ParallaxServices() {
                               <p className="mt-1 text-[11px] text-white/85 leading-snug text-balance">
                                 {platform.solution}
                               </p>
-                            </div>
+      </div>
                           )}
 
                           {platform.stats?.length > 0 && (
