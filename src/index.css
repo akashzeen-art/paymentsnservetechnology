@@ -673,10 +673,6 @@
 @media (prefers-reduced-motion: reduce) {
   .preloader-stars,
   .corridor-chip {
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .preloader-stars {
     animation: none;
   }
 }
